@@ -133,12 +133,12 @@ function App() {
       tocDistance: Math.round(tocDistance * 10) / 10,
       todDistance: Math.round(todDistance * 10) / 10,
       totalDistance: Math.round(totalDistance * 10) / 10,
-      climbTime: Math.round(climbTimeHours * 60), // Convert to minutes
-      cruiseTime: Math.round(cruiseTimeHours * 60), // Convert to minutes
-      descentTime: Math.round(descentTimeHours * 60), // Convert to minutes
+      climbTime: Math.round(climbTimeHours * 60), // Convert to minutos
+      cruiseTime: Math.round(cruiseTimeHours * 60), // Convert to minutos
+      descentTime: Math.round(descentTimeHours * 60), // Convert to minutos
       totalTime: Math.round(
         (climbTimeHours + cruiseTimeHours + descentTimeHours) * 60
-      ), // Total minutes
+      ), // Total minutos
     };
   };
 
@@ -154,7 +154,10 @@ function App() {
 
   const handleAirportSearch = (icao: string, type: "departure" | "arrival") => {
     if (!icao) {
-      setError((prev) => ({ ...prev, [type]: "Please enter an ICAO code" }));
+      setError((prev) => ({
+        ...prev,
+        [type]: "Por favor, insira um código ICAO",
+      }));
       return;
     }
 
@@ -165,7 +168,7 @@ function App() {
     if (!airportData) {
       setError((prev) => ({
         ...prev,
-        [type]: "Airport not found in Brazilian database",
+        [type]: "Aeroporto não encontrado.",
       }));
       return;
     }
@@ -183,29 +186,29 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-blue-100">
+    <div className="min-h-screen bg-gradient-to-b from-emerald-50 to-emerald-100">
       <div className="container mx-auto px-4 py-8">
         <div className="flex items-center justify-center mb-8">
-          <Plane className="w-8 h-8 text-blue-600 mr-2" />
+          <Plane className="w-8 h-8 text-emerald-600 mr-2" />
           <h1 className="text-3xl font-bold text-gray-800">
-            Enhanced TOC/TOD Calculator
+            Calculadora Aprimorada de TOC/TOD
           </h1>
         </div>
 
         {/* Unit Selection */}
         <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
           <h2 className="text-xl font-semibold mb-4 text-gray-700">
-            Unit Preferences
+            Preferências de Unidade
           </h2>
           <div className="flex gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-600 mb-1">
-                Speed Unit
+                Unidade de Velocidade
               </label>
               <select
                 value={speedUnit}
                 onChange={(e) => setSpeedUnit(e.target.value as SpeedUnit)}
-                className="px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                className="px-3 py-2 border border-gray-300 rounded-md focus:ring-emerald-500 focus:border-emerald-500"
               >
                 <option value="kt">Knots</option>
                 <option value="mph">MPH</option>
@@ -214,12 +217,12 @@ function App() {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-600 mb-1">
-                Rate Unit
+                Unidade de Taxa
               </label>
               <select
                 value={rateUnit}
                 onChange={(e) => setRateUnit(e.target.value as RateUnit)}
-                className="px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                className="px-3 py-2 border border-gray-300 rounded-md focus:ring-emerald-500 focus:border-emerald-500"
               >
                 <option value="ftmin">ft/min</option>
                 <option value="ms">m/s</option>
@@ -232,14 +235,14 @@ function App() {
           {/* Input Section */}
           <div className="bg-white rounded-lg shadow-lg p-6">
             <h2 className="text-xl font-semibold mb-4 text-gray-700">
-              Flight Parameters
+              Parâmetros de Voo
             </h2>
             <div className="space-y-4">
               {/* Airport Selection */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-600 mb-1">
-                    Departure ICAO
+                    ICAO de Partida
                   </label>
                   <div className="flex gap-2">
                     <div className="flex-1">
@@ -248,7 +251,7 @@ function App() {
                         name="departureIcao"
                         value={inputs.departureIcao}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 uppercase"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-emerald-500 focus:border-emerald-500 uppercase"
                         maxLength={4}
                       />
                       {error.departure && (
@@ -266,7 +269,7 @@ function App() {
                             {airports.departure.state}
                           </p>
                           <p className="text-gray-600">
-                            Elevation: {airports.departure.elevation} ft
+                            Elevação: {airports.departure.elevation} ft
                           </p>
                         </div>
                       )}
@@ -275,7 +278,7 @@ function App() {
                       onClick={() =>
                         handleAirportSearch(inputs.departureIcao, "departure")
                       }
-                      className="px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                      className="h-10 px-3 py-2 bg-emerald-500 text-white rounded-md hover:bg-emerald-600"
                     >
                       <Navigation className="w-4 h-4" />
                     </button>
@@ -283,7 +286,7 @@ function App() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-600 mb-1">
-                    Arrival ICAO
+                    ICAO de Chegada
                   </label>
                   <div className="flex gap-2">
                     <div className="flex-1">
@@ -292,7 +295,7 @@ function App() {
                         name="arrivalIcao"
                         value={inputs.arrivalIcao}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 uppercase"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-emerald-500 focus:border-emerald-500 uppercase"
                         maxLength={4}
                       />
                       {error.arrival && (
@@ -309,7 +312,7 @@ function App() {
                             {airports.arrival.city}, {airports.arrival.state}
                           </p>
                           <p className="text-gray-600">
-                            Elevation: {airports.arrival.elevation} ft
+                            Elevação: {airports.arrival.elevation} ft
                           </p>
                         </div>
                       )}
@@ -318,7 +321,7 @@ function App() {
                       onClick={() =>
                         handleAirportSearch(inputs.arrivalIcao, "arrival")
                       }
-                      className="px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                      className="h-10 px-3 py-2 bg-emerald-500 text-white rounded-md hover:bg-emerald-600"
                     >
                       <Navigation className="w-4 h-4" />
                     </button>
@@ -328,79 +331,79 @@ function App() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-600 mb-1">
-                  Cruise Altitude (feet)
+                  Altitude de Cruzeiro (pés)
                 </label>
                 <input
                   type="number"
                   name="cruiseAltitude"
                   value={inputs.cruiseAltitude}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-emerald-500 focus:border-emerald-500"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-600 mb-1">
-                  Climb Speed ({speedUnit})
+                  Velocidade de Subida ({speedUnit})
                 </label>
                 <input
                   type="number"
                   name="climbSpeed"
                   value={inputs.climbSpeed}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-emerald-500 focus:border-emerald-500"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-600 mb-1">
-                  Cruise Speed ({speedUnit})
+                  Velocidade de Cruzeiro ({speedUnit})
                 </label>
                 <input
                   type="number"
                   name="cruiseSpeed"
                   value={inputs.cruiseSpeed}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-emerald-500 focus:border-emerald-500"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-600 mb-1">
-                  Descent Speed ({speedUnit})
+                  Velocidade de Descida ({speedUnit})
                 </label>
                 <input
                   type="number"
                   name="descentSpeed"
                   value={inputs.descentSpeed}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-emerald-500 focus:border-emerald-500"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-600 mb-1">
-                  Climb Rate ({rateUnit})
+                  Taxa de Subida ({rateUnit})
                 </label>
                 <input
                   type="number"
                   name="climbRate"
                   value={inputs.climbRate}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-emerald-500 focus:border-emerald-500"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-600 mb-1">
-                  Descent Rate ({rateUnit})
+                  Taxa de Descida ({rateUnit})
                 </label>
                 <input
                   type="number"
                   name="descentRate"
                   value={inputs.descentRate}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-emerald-500 focus:border-emerald-500"
                 />
               </div>
             </div>
@@ -409,27 +412,27 @@ function App() {
           {/* Results Section */}
           <div className="bg-white rounded-lg shadow-lg p-6">
             <h2 className="text-xl font-semibold mb-6 text-gray-700">
-              Flight Profile
+              Perfil de Voo
             </h2>
 
             <div className="space-y-6">
-              <div className="bg-blue-50 p-4 rounded-lg">
+              <div className="bg-neutral-50 p-4 rounded-lg">
                 <div className="flex items-center mb-2">
-                  <ArrowUp className="w-5 h-5 text-blue-600 mr-2" />
+                  <ArrowUp className="w-5 h-5 text-emerald-600 mr-2" />
                   <h3 className="text-lg font-medium text-gray-800">
-                    Climb Phase
+                    Fase de Subida
                   </h3>
                 </div>
                 <p className="text-gray-600">
-                  Distance to TOC:{" "}
-                  <span className="font-semibold text-blue-600">
+                  Distância para TOC:{" "}
+                  <span className="font-semibold text-emerald-600">
                     {results.tocDistance} NM
                   </span>
                 </p>
                 <p className="text-gray-600">
-                  Climb time:{" "}
-                  <span className="font-semibold text-blue-600">
-                    {results.climbTime} minutes
+                  Tempo de subida:{" "}
+                  <span className="font-semibold text-emerald-600">
+                    {results.climbTime} minutos
                   </span>
                 </p>
               </div>
@@ -438,67 +441,68 @@ function App() {
                 <div className="flex items-center mb-2">
                   <Plane className="w-5 h-5 text-green-600 mr-2" />
                   <h3 className="text-lg font-medium text-gray-800">
-                    Cruise Phase
+                    Fase de Cruzeiro
                   </h3>
                 </div>
                 <p className="text-gray-600">
-                  Cruise time:{" "}
+                  Tempo de Cruzeiro:{" "}
                   <span className="font-semibold text-green-600">
-                    {results.cruiseTime} minutes
+                    {results.cruiseTime} minutos
                   </span>
                 </p>
               </div>
 
-              <div className="bg-blue-50 p-4 rounded-lg">
+              <div className="bg-neutral-50 p-4 rounded-lg">
                 <div className="flex items-center mb-2">
-                  <ArrowDown className="w-5 h-5 text-blue-600 mr-2" />
+                  <ArrowDown className="w-5 h-5 text-emerald-600 mr-2" />
                   <h3 className="text-lg font-medium text-gray-800">
-                    Descent Phase
+                    Fase de Descida
                   </h3>
                 </div>
                 <p className="text-gray-600">
-                  Distance from TOD:{" "}
-                  <span className="font-semibold text-blue-600">
+                  Distância do TOD:{" "}
+                  <span className="font-semibold text-emerald-600">
                     {results.todDistance} NM
                   </span>
                 </p>
                 <p className="text-gray-600">
-                  Descent time:{" "}
-                  <span className="font-semibold text-blue-600">
-                    {results.descentTime} minutes
+                  Tempo de Descida:{" "}
+                  <span className="font-semibold text-emerald-600">
+                    {results.descentTime} minutos
                   </span>
                 </p>
               </div>
 
-              <div className="bg-indigo-50 p-4 rounded-lg">
+              <div className="bg-neutral-50 p-4 rounded-lg">
                 <div className="flex items-center mb-2">
-                  <Navigation className="w-5 h-5 text-indigo-600 mr-2" />
+                  <Navigation className="w-5 h-5 text-emerald-600 mr-2" />
                   <h3 className="text-lg font-medium text-gray-800">
-                    Total Flight
+                    Voo Total
                   </h3>
                 </div>
                 <p className="text-gray-600">
-                  Total distance:{" "}
-                  <span className="font-semibold text-indigo-600">
+                  Distância Total:{" "}
+                  <span className="font-semibold text-emerald-600">
                     {results.totalDistance} NM
                   </span>
                 </p>
                 <p className="text-gray-600">
-                  Total time:{" "}
-                  <span className="font-semibold text-indigo-600">
-                    {results.totalTime} minutes
+                  Tempo total:{" "}
+                  <span className="font-semibold text-emerald-600">
+                    {results.totalTime} minutos
                   </span>
                 </p>
               </div>
 
-              <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+              <div className="mt-6 p-4 bg-yellow-50 rounded-lg">
                 <h3 className="text-sm font-medium text-gray-500 mb-2">
-                  Note:
+                  Nota:
                 </h3>
                 <p className="text-sm text-gray-600">
-                  These calculations are approximate and should be used for
-                  planning purposes only. Always follow your aircraft's specific
-                  procedures and ATC instructions.
+                  O consumo de combustível é aproximado e não é garantido. Use
+                  apenas para fins de planejamento e treinamento. Sempre siga os
+                  procedimentos recomendados e o perfil de voo do fabricante da
+                  aeronave.
                 </p>
               </div>
             </div>
