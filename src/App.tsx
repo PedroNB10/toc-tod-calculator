@@ -499,7 +499,7 @@ function App() {
                   Nota:
                 </h3>
                 <p className="text-sm text-gray-600">
-                  O consumo de combustível é aproximado e não é garantido. Use
+                  Os cálculos realizados pela plataforma são aproximados. Use
                   apenas para fins de planejamento e treinamento. Sempre siga os
                   procedimentos recomendados e o perfil de voo do fabricante da
                   aeronave.
