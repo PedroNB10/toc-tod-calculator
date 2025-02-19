@@ -49,13 +49,18 @@ const convertSpeed = (
     mph: 1.15078,
     kmh: 1.852,
   };
-  return value * toKnots[from] * fromKnots[to];
+  const result = value * toKnots[from] * fromKnots[to];
+  return isFinite(result) ? result : 0;
 };
-
 const convertRate = (value: number, from: RateUnit, to: RateUnit): number => {
   if (from === to) return value;
-  if (from === "ftmin" && to === "ms") return value * 0.00508;
-  return value * 196.85;
+  let result;
+  if (from === "ftmin" && to === "ms") {
+    result = value * 0.00508;
+  } else {
+    result = value * 196.85;
+  }
+  return isFinite(result) ? result : 0;
 };
 
 function App() {
@@ -66,12 +71,12 @@ function App() {
   );
 
   const [inputs, setInputs] = useState({
-    cruiseAltitude: 35000, // feet
-    climbSpeed: 250, // in selected speed unit
-    cruiseSpeed: 450, // in selected speed unit
-    descentSpeed: 280, // in selected speed unit
-    climbRate: 2000, // in selected rate unit
-    descentRate: 1500, // in selected rate unit
+    cruiseAltitude: null, // feet
+    climbSpeed: null, // in selected speed unit
+    cruiseSpeed: null, // in selected speed unit
+    descentSpeed: null, // in selected speed unit
+    climbRate: null, // in selected rate unit
+    descentRate: null, // in selected rate unit
     departureIcao: "",
     arrivalIcao: "",
   });
@@ -83,23 +88,39 @@ function App() {
 
   const calculateResults = (): CalculationResult => {
     // Convert all speeds to knots for calculations
-    const climbSpeedKt = convertSpeed(inputs.climbSpeed, speedUnit, "kt");
-    const cruiseSpeedKt = convertSpeed(inputs.cruiseSpeed, speedUnit, "kt");
-    const descentSpeedKt = convertSpeed(inputs.descentSpeed, speedUnit, "kt");
+    const climbSpeedKt = convertSpeed(inputs.climbSpeed ?? 0, speedUnit, "kt");
+    const cruiseSpeedKt = convertSpeed(
+      inputs.cruiseSpeed ?? 0,
+      speedUnit,
+      "kt"
+    );
+    const descentSpeedKt = convertSpeed(
+      inputs.descentSpeed ?? 0,
+      speedUnit,
+      "kt"
+    );
 
     // Convert rates to ft/min for calculations
-    const climbRateFtMin = convertRate(inputs.climbRate, rateUnit, "ftmin");
-    const descentRateFtMin = convertRate(inputs.descentRate, rateUnit, "ftmin");
+    const climbRateFtMin = convertRate(
+      inputs.climbRate ?? 0,
+      rateUnit,
+      "ftmin"
+    );
+    const descentRateFtMin = convertRate(
+      inputs.descentRate ?? 0,
+      rateUnit,
+      "ftmin"
+    );
 
     // Calculate climb phase
     const climbHeight =
-      inputs.cruiseAltitude - (airports.departure?.elevation || 0);
+      (inputs.cruiseAltitude ?? 0) - (airports.departure?.elevation || 0);
     const climbTimeHours = climbHeight / (climbRateFtMin * 60);
     const tocDistance = climbSpeedKt * climbTimeHours;
 
     // Calculate descent phase
     const descentHeight =
-      inputs.cruiseAltitude - (airports.arrival?.elevation || 0);
+      (inputs.cruiseAltitude ?? 0) - (airports.arrival?.elevation || 0);
     const descentTimeHours = descentHeight / (descentRateFtMin * 60);
     const todDistance = descentSpeedKt * descentTimeHours;
 
@@ -191,7 +212,7 @@ function App() {
         <div className="flex items-center justify-center mb-8">
           <Plane className="w-8 h-8 text-emerald-600 mr-2" />
           <h1 className="text-3xl font-bold text-gray-800">
-            Calculadora Aprimorada de TOC/TOD
+            Calculadora TOC/TOD
           </h1>
         </div>
 
@@ -336,7 +357,7 @@ function App() {
                 <input
                   type="number"
                   name="cruiseAltitude"
-                  value={inputs.cruiseAltitude}
+                  value={inputs.cruiseAltitude ?? ""}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-emerald-500 focus:border-emerald-500"
                 />
@@ -349,7 +370,7 @@ function App() {
                 <input
                   type="number"
                   name="climbSpeed"
-                  value={inputs.climbSpeed}
+                  value={inputs.climbSpeed ?? ""}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-emerald-500 focus:border-emerald-500"
                 />
@@ -362,7 +383,7 @@ function App() {
                 <input
                   type="number"
                   name="cruiseSpeed"
-                  value={inputs.cruiseSpeed}
+                  value={inputs.cruiseSpeed ?? ""}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-emerald-500 focus:border-emerald-500"
                 />
@@ -375,7 +396,7 @@ function App() {
                 <input
                   type="number"
                   name="descentSpeed"
-                  value={inputs.descentSpeed}
+                  value={inputs.descentSpeed ?? ""}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-emerald-500 focus:border-emerald-500"
                 />
@@ -388,7 +409,7 @@ function App() {
                 <input
                   type="number"
                   name="climbRate"
-                  value={inputs.climbRate}
+                  value={inputs.climbRate ?? ""}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-emerald-500 focus:border-emerald-500"
                 />
@@ -401,7 +422,7 @@ function App() {
                 <input
                   type="number"
                   name="descentRate"
-                  value={inputs.descentRate}
+                  value={inputs.descentRate ?? ""}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-emerald-500 focus:border-emerald-500"
                 />
@@ -426,13 +447,13 @@ function App() {
                 <p className="text-gray-600">
                   Distância para TOC:{" "}
                   <span className="font-semibold text-emerald-600">
-                    {results.tocDistance} NM
+                    {isNaN(results.tocDistance) ? 0 : results.tocDistance} NM
                   </span>
                 </p>
                 <p className="text-gray-600">
                   Tempo de subida:{" "}
                   <span className="font-semibold text-emerald-600">
-                    {results.climbTime} minutos
+                    {isNaN(results.climbTime) ? 0 : results.climbTime} minutos
                   </span>
                 </p>
               </div>
@@ -447,7 +468,7 @@ function App() {
                 <p className="text-gray-600">
                   Tempo de Cruzeiro:{" "}
                   <span className="font-semibold text-green-600">
-                    {results.cruiseTime} minutos
+                    {isNaN(results.cruiseTime) ? 0 : results.cruiseTime} minutos
                   </span>
                 </p>
               </div>
@@ -462,13 +483,14 @@ function App() {
                 <p className="text-gray-600">
                   Distância do TOD:{" "}
                   <span className="font-semibold text-emerald-600">
-                    {results.todDistance} NM
+                    {isNaN(results.todDistance) ? 0 : results.todDistance} NM
                   </span>
                 </p>
                 <p className="text-gray-600">
                   Tempo de Descida:{" "}
                   <span className="font-semibold text-emerald-600">
-                    {results.descentTime} minutos
+                    {isNaN(results.descentTime) ? 0 : results.descentTime}{" "}
+                    minutos
                   </span>
                 </p>
               </div>
@@ -483,13 +505,13 @@ function App() {
                 <p className="text-gray-600">
                   Distância Total:{" "}
                   <span className="font-semibold text-emerald-600">
-                    {results.totalDistance} NM
+                    {isNaN(results.totalDistance) ? 0 : results.tocDistance} NM
                   </span>
                 </p>
                 <p className="text-gray-600">
                   Tempo total:{" "}
                   <span className="font-semibold text-emerald-600">
-                    {results.totalTime} minutos
+                    {isNaN(results.totalTime) ? 0 : results.totalTime} minutos
                   </span>
                 </p>
               </div>
