@@ -1,5 +1,4 @@
-import airportsData from "../../waypoints.json"
-
+import airportsData from "../../waypoints.json";
 import { BrazilianAirport } from "../data/brazilian-airports";
 
 interface AirportData {
@@ -16,12 +15,16 @@ interface AirportData {
   };
 }
 
-export function getAirportData(icao: string): AirportData | null {
-  const airportsDataJson = airportsData as BrazilianAirport[];
-  const airport = airportsDataJson.find(
-    airport => airport.icao.toUpperCase() === icao.toUpperCase()
-  );
+// Create a lookup map keyed by uppercase ICAO code
+const airportMap: Record<string, BrazilianAirport> = {};
+const airportsDataJson = airportsData as BrazilianAirport[];
 
+airportsDataJson.forEach((airport) => {
+  airportMap[airport.icao.toUpperCase()] = airport;
+});
+
+export function getAirportData(icao: string): AirportData | null {
+  const airport = airportMap[icao.toUpperCase()];
   if (!airport) return null;
 
   return {
