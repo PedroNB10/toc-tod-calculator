@@ -447,13 +447,20 @@ function App() {
                 <p className="text-gray-600">
                   Distância para TOC:{" "}
                   <span className="font-semibold text-emerald-600">
-                    {isNaN(results.tocDistance) ? 0 : results.tocDistance} NM
+                    {isNaN(results.tocDistance) ||
+                    !isFinite(results.tocDistance)
+                      ? 0
+                      : results.tocDistance}{" "}
+                    NM
                   </span>
                 </p>
                 <p className="text-gray-600">
                   Tempo de subida:{" "}
                   <span className="font-semibold text-emerald-600">
-                    {isNaN(results.climbTime) ? 0 : results.climbTime} minutos
+                    {isNaN(results.climbTime) || !isFinite(results.climbTime)
+                      ? 0
+                      : results.climbTime}{" "}
+                    minutos
                   </span>
                 </p>
               </div>
@@ -468,7 +475,10 @@ function App() {
                 <p className="text-gray-600">
                   Tempo de Cruzeiro:{" "}
                   <span className="font-semibold text-green-600">
-                    {isNaN(results.cruiseTime) ? 0 : results.cruiseTime} minutos
+                    {isNaN(results.cruiseTime) || !isFinite(results.cruiseTime)
+                      ? 0
+                      : results.cruiseTime}{" "}
+                    minutos
                   </span>
                 </p>
               </div>
@@ -483,13 +493,20 @@ function App() {
                 <p className="text-gray-600">
                   Distância do TOD:{" "}
                   <span className="font-semibold text-emerald-600">
-                    {isNaN(results.todDistance) ? 0 : results.todDistance} NM
+                    {isNaN(results.todDistance) ||
+                    !isFinite(results.todDistance)
+                      ? 0
+                      : results.todDistance}{" "}
+                    NM
                   </span>
                 </p>
                 <p className="text-gray-600">
                   Tempo de Descida:{" "}
                   <span className="font-semibold text-emerald-600">
-                    {isNaN(results.descentTime) ? 0 : results.descentTime}{" "}
+                    {isNaN(results.descentTime) ||
+                    !isFinite(results.descentTime)
+                      ? 0
+                      : results.descentTime}{" "}
                     minutos
                   </span>
                 </p>
@@ -505,7 +522,11 @@ function App() {
                 <p className="text-gray-600">
                   Distância Total:{" "}
                   <span className="font-semibold text-emerald-600">
-                    {isNaN(results.totalDistance) ? 0 : results.tocDistance} NM
+                    {isNaN(results.totalDistance) ||
+                    !isFinite(results.totalDistance)
+                      ? 0
+                      : results.totalDistance}{" "}
+                    NM
                   </span>
                 </p>
                 <p className="text-gray-600">
