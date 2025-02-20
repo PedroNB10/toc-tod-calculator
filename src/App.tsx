@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Plane,
   ArrowUp,
@@ -205,6 +205,13 @@ function App() {
 
     setAirports((prev) => ({ ...prev, [type]: airport }));
   };
+
+  useEffect(() => {
+    if (inputs.departureIcao === "" || inputs.arrivalIcao === "") {
+      setAirports({});
+      return;
+    }
+  }, [inputs.arrivalIcao, inputs.departureIcao]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-emerald-50 to-emerald-100">
